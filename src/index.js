@@ -12,15 +12,19 @@ const countryInfo = document.querySelector('.country-info');
 
 searchInput.addEventListener('input', debounce(inputResult, DEBOUNCE_DELAY));
 
+ 
+
 function inputResult(e) {
     const inputText = e.target.value.trim();
-
-    let promise = searchCountries(inputText);
-
-    promise.then((countries) => {
-
+    if(!inputText) {
         clearDiv()
-
+        return
+    }
+    let promise = searchCountries(inputText);
+   
+    promise.then((countries) => {
+    
+        clearDiv()
         if(countries.length === 1) {
             let html = createCountryInfo(countries) 
             countryInfo.innerHTML = html
@@ -32,10 +36,7 @@ function inputResult(e) {
 
         } else if (countries.length > 10) {
             Notify.info('Too many matches found. Please enter a more specific name.')
-        }
-
-        
-        
+        } 
     }, (error) => {
         clearDiv()
         
